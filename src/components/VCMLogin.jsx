@@ -9,26 +9,25 @@ const VCMLogin = () => {
   const [error, setError] = useState('');
   const [isLoading, setIsLoading] = useState(true);
 
-  useEffect(() => {
-    // Check if user is already logged in and token is valid
-    const token = localStorage.getItem('vcm_token');
-    if (token) {
-      // Verify token expiration
-      try {
-        const payload = JSON.parse(atob(token.split('.')[1]));
-        if (payload.exp * 1000 > Date.now()) {
-          window.location.href = '/vcm/dashboard';
-        } else {
-          // Token expired, remove it
-          localStorage.removeItem('vcm_token');
-          localStorage.setItem('userRole', 'vcm');
-        }
-      } catch (error) {
+ useEffect(() => {
+  const token = localStorage.getItem('vcm_token');
+  if (token) {
+    try {
+      const payload = JSON.parse(atob(token.split('.')[1]));
+      if (payload.exp * 1000 > Date.now()) {
+        window.location.href = '/vcm/dashboard';
+      } else {
+        // Token expired, remove it and role
         localStorage.removeItem('vcm_token');
+        localStorage.removeItem('userRole');
       }
+    } catch (error) {
+      localStorage.removeItem('vcm_token');
+      localStorage.removeItem('userRole');
     }
-    setIsLoading(false);
-  }, []);
+  }
+  setIsLoading(false);
+}, []);
 
   const handleLogin = async (e) => {
     e.preventDefault();
