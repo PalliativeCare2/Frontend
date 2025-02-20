@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { User, Lock,Eye, EyeOff } from 'lucide-react';
+import { useNavigate } from 'react-router-dom';
 import BASE_URL from '../config';
 
 const AdminLogin = () => {
@@ -17,7 +18,7 @@ const AdminLogin = () => {
       try {
         const payload = JSON.parse(atob(token.split('.')[1]));
         if (payload.exp * 1000 > Date.now()) {
-          window.location.href = '/admin/dashboard';
+           navigate('/admin/dashboard');
         } else {
           // Token expired, remove it
           localStorage.removeItem('admin_token');
