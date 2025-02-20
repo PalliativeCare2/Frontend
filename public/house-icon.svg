@@ -1,12 +1,6 @@
-const Home = () => {
-  return (
-    <svg viewBox="0 0 400 300" className="w-full h-48 object-cover rounded-lg mb-4">
-      <rect width="400" height="300" fill="#f0fdfa"/>
-      <path d="M200 80 L100 150 L100 250 L300 250 L300 150 Z" fill="#0d9488"/>
-      <rect x="180" y="180" width="40" height="70" fill="#f0fdfa"/>
-      <path d="M200 140 C200 120 180 120 180 130 C180 140 200 150 200 150 C200 150 220 140 220 130 C220 120 200 120 200 140" fill="#14b8a6"/>
-    </svg>
-  );
-};
-
-export default Home;
+<svg viewBox="0 0 400 300">
+  <rect width="400" height="300" fill="#f0fdfa"/>
+  <path d="M200 80 L100 150 L100 250 L300 250 L300 150 Z" fill="#0d9488"/>
+  <rect x="180" y="180" width="40" height="70" fill="#f0fdfa"/>
+  <path d="M200 140 C200 120 180 120 180 130 C180 140 200 150 200 150 C200 150 220 140 220 130 C220 120 200 120 200 140" fill="#14b8a6"/>
+</svg>
