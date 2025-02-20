@@ -37,30 +37,51 @@ const CopyButton = ({ text, label }) => {
 
 
 const UpiPayment = ({ amount, setAmount, upiId }) => {
-const handlePayment = () => {
-  const transactionNote = `Website Donation - Palliative Care`;
-  const upiUrl = `upi://pay?pa=${upiId}&pn=Palliative%20Care&am=${amount}&tn=${encodeURIComponent(transactionNote)}`;
-
-  // Detect iOS
-  const isIOS = /iPad|iPhone|iPod/.test(navigator.userAgent) && !window.MSStream;
-
-  if (isIOS) {
-    // Try opening UPI link directly
-    window.location.href = upiUrl;
-
-    // Show a fallback message after 2 seconds if the app doesn't open
+  const handlePayment = () => {
+    const transactionNote = `Website Donation - Palliative Care`;
+    const upiUrl = `upi://pay?pa=${upiId}&pn=Palliative%20Care&am=${amount}&tn=${encodeURIComponent(transactionNote)}`;
+    
+    // Create an invisible anchor element
+    const link = document.createElement('a');
+    link.href = upiUrl;
+    link.rel = 'noopener noreferrer';
+    link.style.display = 'none';
+    document.body.appendChild(link);
+    
+    // Detect device
+    const isIOS = /iPad|iPhone|iPod/.test(navigator.userAgent) && !window.MSStream;
+    const isAndroid = /Android/.test(navigator.userAgent);
+    
+    if (isIOS) {
+      // For iOS devices
+      window.location.href = upiUrl;
+      
+      setTimeout(() => {
+        if (!document.hidden) {
+          alert("If the payment app didn't open, please try scanning the QR code instead.");
+        }
+      }, 2000);
+    } else if (isAndroid) {
+      // For Android devices
+      // Using intent URL format which is more reliable on Android
+      const intentUrl = `intent://${upiUrl.replace('upi://', '')}#Intent;scheme=upi;package=in.org.npci.upiapp;end`;
+      window.location.href = intentUrl;
+      
+      setTimeout(() => {
+        if (!document.hidden) {
+          alert("If no payment app opened, please ensure you have a UPI-enabled payment app installed or try scanning the QR code instead.");
+        }
+      }, 2000);
+    } else {
+      // For other devices
+      link.click();
+    }
+    
+    // Cleanup
     setTimeout(() => {
-      if (!document.hidden) {
-        alert("If the payment app didn't open, please click the link manually.");
-      }
+      document.body.removeChild(link);
     }, 2000);
-  } else {
-    // For non-iOS devices, open the link normally
-    window.open(upiUrl, '_blank');
-  }
-};
-
-  
+  };
 
   return (
     <div className="bg-white rounded-xl shadow-sm border border-gray-100 p-6 space-y-4">
