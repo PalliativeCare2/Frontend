@@ -35,69 +35,70 @@ const CopyButton = ({ text, label }) => {
   );
 };
 
+
 const UpiPayment = ({ amount, setAmount, upiId }) => {
   const handlePayment = () => {
-    // Create transaction note
     const transactionNote = `Website Donation - Palliative Care`;
-    
+    const upiUrl = `upi://pay?pa=${upiId}&pn=Palliative%20Care&am=${amount}&tn=${encodeURIComponent(transactionNote)}`;
+  
     // Detect iOS
     const isIOS = /iPad|iPhone|iPod/.test(navigator.userAgent) && !window.MSStream;
-    
-    // Construct UPI URL with all parameters
-    const upiUrl = `upi://pay?pa=${upiId}&pn=Palliative Care&am=${amount}&tn=${encodeURIComponent(transactionNote)}`;
-    
-    // For iOS devices, try to open specific UPI apps
+  
     if (isIOS) {
-      // List of common UPI apps and their URL schemes
-      const upiApps = {
-        gpay: `googlegpay://upi/pay?pa=${upiId}&pn=Palliative%20Care&am=${amount}&tn=${encodeURIComponent(transactionNote)}`,
-        phonepe: `phonepe://pay?pa=${upiId}&pn=Palliative%20Care&am=${amount}&tn=${encodeURIComponent(transactionNote)}`,
-        paytm: `paytmmp://pay?pa=${upiId}&pn=Palliative%20Care&am=${amount}&tn=${encodeURIComponent(transactionNote)}`,
-      };
-
-      // Try opening each app in sequence with a fallback
-      const openApp = (scheme) => {
-        window.location.href = scheme;
-      };
-
-      // Add a fallback timeout to handle cases where no app is installed
-      let appOpened = false;
-      
-      // Try opening Google Pay first
-      openApp(upiApps.gpay);
-      
-      // Set a timeout to try PhonePe if Google Pay doesn't open
-      setTimeout(() => {
-        if (!appOpened) {
-          openApp(upiApps.phonepe);
-          
-          // Try Paytm after another short delay
-          setTimeout(() => {
-            if (!appOpened) {
-              openApp(upiApps.paytm);
-              
-              // Finally, try the generic UPI URL
-              setTimeout(() => {
-                if (!appOpened) {
-                  window.location.href = upiUrl;
-                }
-              }, 500);
-            }
-          }, 500);
-        }
-      }, 500);
-
-      // Listen for visibility change to detect if an app was opened
-      document.addEventListener('visibilitychange', () => {
-        if (document.hidden) {
-          appOpened = true;
-        }
-      });
-    } else {
-      // For non-iOS devices, use the standard UPI URL
+      // Try opening UPI link directly
       window.location.href = upiUrl;
+  
+      // Show a fallback message after 2 seconds if the app doesn't open
+      setTimeout(() => {
+        if (!document.hidden) {
+          alert("If the payment app didn't open, please click the link manually.");
+        }
+      }, 2000);
+    } else {
+      // For non-iOS devices, open the link normally
+      window.open(upiUrl, '_blank');
     }
   };
+  
+
+  return (
+    <div className="bg-white rounded-xl shadow-sm border border-gray-100 p-6 space-y-4">
+      <div className="flex items-center space-x-3">
+        <div className="p-2 bg-teal-50 rounded-lg">
+          <CreditCard className="h-6 w-6 text-teal-600" />
+        </div>
+        <h3 className="text-lg font-semibold text-gray-800">Quick Payment</h3>
+      </div>
+      
+      <div className="space-y-4">
+        <div>
+          <label htmlFor="amount" className="block text-sm font-medium text-gray-700 mb-1">
+            Donation Amount
+          </label>
+          <div className="relative">
+            <span className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-500">₹</span>
+            <input
+              id="amount"
+              type="number"
+              min="1"
+              value={amount}
+              onChange={(e) => setAmount(e.target.value)}
+              placeholder="Enter amount"
+              className="w-full pl-8 pr-4 py-2 border border-gray-200 rounded-lg focus:ring-2 focus:ring-teal-500 focus:border-teal-500 transition-colors"
+            />
+          </div>
+        </div>
+        
+        <button
+          onClick={handlePayment}
+          className="w-full bg-teal-600 hover:bg-teal-700 text-white font-medium py-2 px-4 rounded-lg transition-colors duration-200 flex items-center justify-center space-x-2"
+        >
+          <span>Pay with UPI</span>
+        </button>
+      </div>
+    </div>
+  );
+};
 
   return (
     <div className="bg-white rounded-xl shadow-sm border border-gray-100 p-6 space-y-4">
