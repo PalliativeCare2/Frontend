@@ -49,41 +49,53 @@ const UpiPayment = ({ amount, setAmount, upiId }) => {
     // For iOS devices, try to open specific UPI apps
     if (isIOS) {
       // List of common UPI apps and their URL schemes
-      const upiApps = [
-        `gpay://upi/pay?pa=${upiId}&pn=Palliative%20Care&am=${amount}&tn=${encodeURIComponent(transactionNote)}`,
-        `phonepe://pay?pa=${upiId}&pn=Palliative%20Care&am=${amount}&tn=${encodeURIComponent(transactionNote)}`,
-        `paytm://upi/pay?pa=${upiId}&pn=Palliative%20Care&am=${amount}&tn=${encodeURIComponent(transactionNote)}`,
-        upiUrl // Default UPI URL as fallback
-      ];
-
-      // Try opening each app URL
-      const tryOpenApp = async () => {
-        for (const appUrl of upiApps) {
-          try {
-            // Create a hidden iframe to try opening the app
-            const iframe = document.createElement('iframe');
-            iframe.style.display = 'none';
-            document.body.appendChild(iframe);
-            iframe.src = appUrl;
-
-            // Remove iframe after a short delay
-            setTimeout(() => {
-              iframe.remove();
-            }, 100);
-
-            // Break after first successful attempt
-            break;
-          } catch (error) {
-            console.log('Failed to open app:', error);
-            continue;
-          }
-        }
+      const upiApps = {
+        gpay: `googlegpay://upi/pay?pa=${upiId}&pn=Palliative%20Care&am=${amount}&tn=${encodeURIComponent(transactionNote)}`,
+        phonepe: `phonepe://pay?pa=${upiId}&pn=Palliative%20Care&am=${amount}&tn=${encodeURIComponent(transactionNote)}`,
+        paytm: `paytmmp://pay?pa=${upiId}&pn=Palliative%20Care&am=${amount}&tn=${encodeURIComponent(transactionNote)}`,
       };
 
-      tryOpenApp();
+      // Try opening each app in sequence with a fallback
+      const openApp = (scheme) => {
+        window.location.href = scheme;
+      };
+
+      // Add a fallback timeout to handle cases where no app is installed
+      let appOpened = false;
+      
+      // Try opening Google Pay first
+      openApp(upiApps.gpay);
+      
+      // Set a timeout to try PhonePe if Google Pay doesn't open
+      setTimeout(() => {
+        if (!appOpened) {
+          openApp(upiApps.phonepe);
+          
+          // Try Paytm after another short delay
+          setTimeout(() => {
+            if (!appOpened) {
+              openApp(upiApps.paytm);
+              
+              // Finally, try the generic UPI URL
+              setTimeout(() => {
+                if (!appOpened) {
+                  window.location.href = upiUrl;
+                }
+              }, 500);
+            }
+          }, 500);
+        }
+      }, 500);
+
+      // Listen for visibility change to detect if an app was opened
+      document.addEventListener('visibilitychange', () => {
+        if (document.hidden) {
+          appOpened = true;
+        }
+      });
     } else {
       // For non-iOS devices, use the standard UPI URL
-      window.open(upiUrl, '_blank');
+      window.location.href = upiUrl;
     }
   };
 
@@ -117,7 +129,8 @@ const UpiPayment = ({ amount, setAmount, upiId }) => {
         
         <button
           onClick={handlePayment}
-          className="w-full bg-teal-600 hover:bg-teal-700 text-white font-medium py-2 px-4 rounded-lg transition-colors duration-200 flex items-center justify-center space-x-2"
+          disabled={!amount}
+          className={`w-full ${!amount ? 'bg-gray-300 cursor-not-allowed' : 'bg-teal-600 hover:bg-teal-700'} text-white font-medium py-2 px-4 rounded-lg transition-colors duration-200 flex items-center justify-center space-x-2`}
         >
           <span>Pay with UPI</span>
         </button>
@@ -125,7 +138,6 @@ const UpiPayment = ({ amount, setAmount, upiId }) => {
     </div>
   );
 };
-
 const ManualPayment = ({ upiId, qrCodeImagePath }) => (
   <div className="bg-white rounded-xl shadow-sm border border-gray-100 p-6 space-y-4">
     <div className="flex items-center space-x-3">
