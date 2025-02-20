@@ -37,28 +37,29 @@ const CopyButton = ({ text, label }) => {
 
 
 const UpiPayment = ({ amount, setAmount, upiId }) => {
-  const handlePayment = () => {
-    const transactionNote = `Website Donation - Palliative Care`;
-    const upiUrl = `upi://pay?pa=${upiId}&pn=Palliative%20Care&am=${amount}&tn=${encodeURIComponent(transactionNote)}`;
-  
-    // Detect iOS
-    const isIOS = /iPad|iPhone|iPod/.test(navigator.userAgent) && !window.MSStream;
-  
-    if (isIOS) {
-      // Try opening UPI link directly
-      window.location.href = upiUrl;
-  
-      // Show a fallback message after 2 seconds if the app doesn't open
-      setTimeout(() => {
-        if (!document.hidden) {
-          alert("If the payment app didn't open, please click the link manually.");
-        }
-      }, 2000);
-    } else {
-      // For non-iOS devices, open the link normally
-      window.open(upiUrl, '_blank');
-    }
-  };
+const handlePayment = () => {
+  const transactionNote = `Website Donation - Palliative Care`;
+  const upiUrl = `upi://pay?pa=${upiId}&pn=Palliative%20Care&am=${amount}&tn=${encodeURIComponent(transactionNote)}`;
+
+  // Detect iOS
+  const isIOS = /iPad|iPhone|iPod/.test(navigator.userAgent) && !window.MSStream;
+
+  if (isIOS) {
+    // Try opening UPI link directly
+    window.location.href = upiUrl;
+
+    // Show a fallback message after 2 seconds if the app doesn't open
+    setTimeout(() => {
+      if (!document.hidden) {
+        alert("If the payment app didn't open, please click the link manually.");
+      }
+    }, 2000);
+  } else {
+    // For non-iOS devices, open the link normally
+    window.open(upiUrl, '_blank');
+  }
+};
+
   
 
   return (
