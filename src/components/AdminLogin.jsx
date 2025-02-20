@@ -11,24 +11,24 @@ const AdminLogin = () => {
   const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
-    // Check if user is already logged in and token is valid
-    const token = localStorage.getItem('admin_token');
-    if (token) {
-      // Verify token expiration
-      try {
-        const payload = JSON.parse(atob(token.split('.')[1]));
-        if (payload.exp * 1000 > Date.now()) {
-           navigate('/admin/dashboard');
-        } else {
-          // Token expired, remove it
-          localStorage.removeItem('admin_token');
-        }
-      } catch (error) {
+  const token = localStorage.getItem('admin_token');
+  if (token) {
+    try {
+      const payload = JSON.parse(atob(token.split('.')[1]));
+      if (payload.exp * 1000 > Date.now()) {
+        window.location.href = '/admin/dashboard';
+      } else {
+        // Token expired, remove it and role
         localStorage.removeItem('admin_token');
+        localStorage.removeItem('userRole');
       }
+    } catch (error) {
+      localStorage.removeItem('admin_token');
+      localStorage.removeItem('userRole');
     }
-    setIsLoading(false);
-  }, []);
+  }
+  setIsLoading(false);
+}, []);
 
   const handleLogin = async (e) => {
     e.preventDefault();
