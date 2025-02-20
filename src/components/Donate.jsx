@@ -101,45 +101,7 @@ const handlePayment = () => {
   );
 };
 
-  return (
-    <div className="bg-white rounded-xl shadow-sm border border-gray-100 p-6 space-y-4">
-      <div className="flex items-center space-x-3">
-        <div className="p-2 bg-teal-50 rounded-lg">
-          <CreditCard className="h-6 w-6 text-teal-600" />
-        </div>
-        <h3 className="text-lg font-semibold text-gray-800">Quick Payment</h3>
-      </div>
-      
-      <div className="space-y-4">
-        <div>
-          <label htmlFor="amount" className="block text-sm font-medium text-gray-700 mb-1">
-            Donation Amount
-          </label>
-          <div className="relative">
-            <span className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-500">₹</span>
-            <input
-              id="amount"
-              type="number"
-              min="1"
-              value={amount}
-              onChange={(e) => setAmount(e.target.value)}
-              placeholder="Enter amount"
-              className="w-full pl-8 pr-4 py-2 border border-gray-200 rounded-lg focus:ring-2 focus:ring-teal-500 focus:border-teal-500 transition-colors"
-            />
-          </div>
-        </div>
-        
-        <button
-          onClick={handlePayment}
-          disabled={!amount}
-          className={`w-full ${!amount ? 'bg-gray-300 cursor-not-allowed' : 'bg-teal-600 hover:bg-teal-700'} text-white font-medium py-2 px-4 rounded-lg transition-colors duration-200 flex items-center justify-center space-x-2`}
-        >
-          <span>Pay with UPI</span>
-        </button>
-      </div>
-    </div>
-  );
-};
+ 
 const ManualPayment = ({ upiId, qrCodeImagePath }) => (
   <div className="bg-white rounded-xl shadow-sm border border-gray-100 p-6 space-y-4">
     <div className="flex items-center space-x-3">
