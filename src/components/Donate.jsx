@@ -80,9 +80,8 @@ const UpiPayment = ({ amount, setAmount, upiId }) => {
         }
       }, 3000);
     } else if (isAndroid) {
-      // For Android, use existing intent URL
-      const intentUrl = `intent://upi/pay?pa=${upiId}&pn=Palliative%20Care&am=${amount}&tn=${encodeURIComponent(transactionNote)}#Intent;scheme=upi;package=com.google.android.apps.nbu.paisa.user;end`;
-      window.location.href = intentUrl;
+    // Use universal UPI URL instead of Google Pay intent
+    window.location.href = upiUrl;
       
       setTimeout(() => {
         if (!document.hidden) {
