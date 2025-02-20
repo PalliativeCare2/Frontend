@@ -38,33 +38,50 @@ const CopyButton = ({ text, label }) => {
 
 const UpiPayment = ({ amount, setAmount, upiId }) => {
   const handlePayment = () => {
+    if (!amount) {
+      alert("Please enter an amount");
+      return;
+    }
+
     const transactionNote = `Website Donation - Palliative Care`;
     const upiUrl = `upi://pay?pa=${upiId}&pn=Palliative%20Care&am=${amount}&tn=${encodeURIComponent(transactionNote)}`;
     
-    // Create an invisible anchor element
-    const link = document.createElement('a');
-    link.href = upiUrl;
-    link.rel = 'noopener noreferrer';
-    link.style.display = 'none';
-    document.body.appendChild(link);
-    
     // Detect device
-    const isIOS = /iPad|iPhone|iPod/.test(navigator.userAgent) && !window.MSStream;
     const isAndroid = /Android/.test(navigator.userAgent);
+    const isIOS = /iPad|iPhone|iPod/.test(navigator.userAgent) && !window.MSStream;
     
     if (isIOS) {
-      // For iOS devices
-      window.location.href = upiUrl;
-      
+      // iOS-specific deep links
+      const gpayDeepLink = `gpay://upi/pay?pa=${upiId}&pn=Palliative%20Care&am=${amount}&tn=${encodeURIComponent(transactionNote)}`;
+      const paytmDeepLink = `paytm://upi/pay?pa=${upiId}&pn=Palliative%20Care&am=${amount}&tn=${encodeURIComponent(transactionNote)}`;
+      const phonePeDeepLink = `phonepe://upi/pay?pa=${upiId}&pn=Palliative%20Care&am=${amount}&tn=${encodeURIComponent(transactionNote)}`;
+
+      // Try Google Pay first
+      window.location.href = gpayDeepLink;
+
+      // Try Paytm after 1 second if GPay doesn't open
       setTimeout(() => {
         if (!document.hidden) {
-          alert("If the payment app didn't open, please try scanning the QR code instead.");
+          window.location.href = paytmDeepLink;
+        }
+      }, 1000);
+
+      // Try PhonePe after another 1 second if Paytm doesn't open
+      setTimeout(() => {
+        if (!document.hidden) {
+          window.location.href = phonePeDeepLink;
         }
       }, 2000);
+
+      // Show fallback message if none of the apps open
+      setTimeout(() => {
+        if (!document.hidden) {
+          alert("Please ensure you have Google Pay, Paytm, or PhonePe installed, or try scanning the QR code instead.");
+        }
+      }, 3000);
     } else if (isAndroid) {
-      // For Android devices
-      // Using intent URL format which is more reliable on Android
-      const intentUrl = `intent://${upiUrl.replace('upi://', '')}#Intent;scheme=upi;package=in.org.npci.upiapp;end`;
+      // For Android, use existing intent URL
+      const intentUrl = `intent://upi/pay?pa=${upiId}&pn=Palliative%20Care&am=${amount}&tn=${encodeURIComponent(transactionNote)}#Intent;scheme=upi;package=com.google.android.apps.nbu.paisa.user;end`;
       window.location.href = intentUrl;
       
       setTimeout(() => {
@@ -73,14 +90,9 @@ const UpiPayment = ({ amount, setAmount, upiId }) => {
         }
       }, 2000);
     } else {
-      // For other devices
-      link.click();
+      // For other devices, try the regular UPI URL
+      window.location.href = upiUrl;
     }
-    
-    // Cleanup
-    setTimeout(() => {
-      document.body.removeChild(link);
-    }, 2000);
   };
 
   return (
