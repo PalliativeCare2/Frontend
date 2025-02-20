@@ -220,7 +220,7 @@ const AboutUs = () => {
       <div className="flex items-center space-x-3">
         <MapPin className="text-teal-600" />
         <a 
-          href="https://maps.google.com/?q=10.9197,76.1736" 
+          href="https://maps.google.com/?q=11.247225,76.302209" 
           target="_blank" 
           rel="noopener noreferrer"
           className="hover:text-teal-600 transition-colors"
@@ -408,7 +408,7 @@ const AboutUs = () => {
   </div>
   <h3 className="text-xl font-semibold mb-2">Location</h3>
   <a 
-    href="https://maps.google.com/?q=10.9197,76.1736" 
+    href="https://maps.google.com/?q=11.247225,76.302209" 
     target="_blank" 
     rel="noopener noreferrer"
     className="text-gray-600 hover:text-teal-600 transition-colors"
