@@ -32,6 +32,8 @@ import EquipmentDisplay from './components/EquipmentDisplay';
 import PatientStatistics from './components/PatientStatistics';
 import NotFound from './components/NotFound';
 import ProtectedRoute from './components/ProtectedRoute';
+import PrivacyPolicy from './components/PrivacyPolicy';
+import TermsOfService from './components/TermsOfService'; 
 
 
 
@@ -48,6 +50,8 @@ const App = () => {
           <Route path="/patient-registration" element={<PatientRegistration />} />
           <Route path="/about" element={<About />} />
           <Route path="/equipment-display" element={<EquipmentDisplay />} />
+          <Route path="/privacy" element={<PrivacyPolicy />} />
+           <Route path="/terms" element={<TermsOfService />} />
           <Route path="*" element={<NotFound />} />
 
           <Route path="/admin" element={<AdminLogin />} />
