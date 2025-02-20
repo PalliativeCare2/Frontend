@@ -93,8 +93,8 @@ const PrivacyPolicy = () => {
               <div className="mt-4 text-gray-700">
                 <p>Palliative Care Clinic</p>
                 <p>Pookkottumpadam, Kerala, India</p>
-                <p>Email: privacy@palliativecareclinic.org</p>
-                <p>Phone: [Your Phone Number]</p>
+                <p>Email: palliativeppm@gmail.com</p>
+                <p>Phone: 94475 31225</p>
               </div>
             </section>
           </div>
