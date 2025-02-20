@@ -29,6 +29,8 @@ const Footer = () => {
     }
   ];
 
+ const googleMapsUrl = "https://maps.google.com/?q=11.247225,76.302209";
+
   return (
     <footer className="bg-white shadow-md mt-auto">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -37,10 +39,17 @@ const Footer = () => {
             <div className="space-y-4">
               <h2 className="text-xl font-bold text-teal-900">Palliative Care Clinic</h2>
               <p className="text-sm text-teal-600">Pookkottumpadam</p>
-              <div className="flex items-center space-x-2 text-teal-700">
-                <MapPin size={20} />
-                <span className="text-sm">Pookkottumpadam, Kerala, India</span>
-              </div>
+              <a 
+                href={googleMapsUrl}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="flex items-center space-x-2 text-teal-700 hover:text-teal-900 transition duration-300 group"
+              >
+                <MapPin size={20} className="group-hover:scale-110 transition-transform duration-300" />
+                <span className="text-sm underline-offset-2 hover:underline">
+                  Pookkottumpadam, Kerala, India
+                </span>
+              </a>
             </div>
 
             <div className="space-y-4">
