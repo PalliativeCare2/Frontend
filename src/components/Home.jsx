@@ -1,6 +1,6 @@
 import React, { useRef } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { ChevronDown, Users, HeartHandshake, Info } from 'lucide-react';
+import { ChevronDown, Users, HeartHandshake, Info, Heart } from 'lucide-react';
 import Registration from './Registration';
 import Footer from './Footer'
 import EmergencyFundCard from './EmergencyFundCard';
@@ -82,10 +82,18 @@ const Home = () => {
             Join us in our mission to provide comfort and support to those in need through dedicated palliative care services
           </p>
           
-          <div className="flex flex-wrap justify-center gap-4">
+          <div className="flex flex-wrap justify-center gap-4 max-w-3xl">
+            <button
+              onClick={() => navigate('/donate')}
+              className="flex items-center px-6 py-2.5 bg-teal-800 space-x-2 text-white rounded-full hover:bg-teal-700 transition-colors font-medium shadow-md hover:shadow-lg transform hover:-translate-y-0.5 duration-200 animate-pulse"
+            >
+              <Heart size={20} />
+              <span>Donate</span>
+            </button>
+
             <button
               onClick={scrollToVolunteer}
-              className="flex items-center space-x-2 bg-teal-600 hover:bg-teal-700 text-white px-6 py-3 rounded-full transition duration-300"
+              className="flex items-center space-x-2 bg-teal-700 hover:bg-teal-800 text-white px-6 py-3 rounded-full transition duration-300"
             >
               <Users size={20} />
               <span>Join Us</span>
