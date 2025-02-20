@@ -95,23 +95,21 @@ const PatientStatisticsDisplay = () => {
       <style>{scrollbarStyles}</style>
       <div 
         ref={componentRef}
-        className="bg-teal-50 p-6 rounded-lg shadow-md hover:shadow-lg transition-all duration-300 group relative z-50 w-full"
+        className="bg-teal-50 p-8 rounded-lg shadow-md hover:shadow-lg transition-all duration-300 group relative z-50 text-center"
       >
         <div 
-          className="flex items-center justify-between cursor-pointer"
+          className="flex flex-col items-center justify-center cursor-pointer"
           onClick={() => setShowDetails(!showDetails)}
         >
-          <div>
-            <div className="text-4xl font-bold text-teal-600 mb-2 flex items-center">
-              <Users className="mr-2 text-teal-500" size={32} />
-              {statistics.total_patients_cumulative || 500}+
-            </div>
-            <div className="text-gray-600">Patients Supported</div>
+          <div className="text-4xl font-bold text-teal-600 mb-2 flex items-center justify-center">
+            <Users className="mr-2 text-teal-500" size={32} />
+            {statistics.total_patients_cumulative || 500}+
           </div>
+          <div className="text-gray-600">Patients Supported</div>
           {showDetails ? (
-            <ChevronUp className="text-teal-600 group-hover:text-teal-800" size={24} />
+            <ChevronUp className="text-teal-600 group-hover:text-teal-800 mt-2" size={24} />
           ) : (
-            <ChevronDown className="text-teal-600 group-hover:text-teal-800" size={24} />
+            <ChevronDown className="text-teal-600 group-hover:text-teal-800 mt-2" size={24} />
           )}
         </div>
 
