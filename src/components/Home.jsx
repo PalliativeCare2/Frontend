@@ -116,10 +116,6 @@ const Home = () => {
               <span>About Us</span>
             </button>
           </div>
-          
-          <div className="absolute bottom-8 animate-bounce text-white">
-            <ChevronDown size={32} />
-          </div>
         </div>
       </div>
 
