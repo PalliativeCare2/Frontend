@@ -23,7 +23,7 @@ const AboutUs = () => {
 
   const committeeMembers = [
     {
-      name: "V.HMASA HAJI",
+      name: "V.HAMSA HAJI",
       role: "Chairman",
     },
     {
